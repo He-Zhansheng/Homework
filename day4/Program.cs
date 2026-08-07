@@ -102,10 +102,18 @@
         static void Func7()
         {
             Console.WriteLine("题目描述：有一个棋盘，有64个方格，在第一个方格里面放1粒芝麻重量是0.00001kg，第二个里面放2粒，第三个里面放4，棋盘上放的所有芝麻的重量");
-            double numResult = 0;
+            double numResult = 0.00001;
+            double num = 1;
+            //for (int i = 1; i < 64; i++)
+            //{
+            //    num *= 2;
+            //    numResult += (num * 0.00001);
+            //}
+
             for (int i = 1; i <= 64; i++)
             {
-                numResult += (i * 0.00001);
+                num = Math.Pow(2, i - 1);
+                numResult += (num * 0.00001);
             }
             Console.WriteLine($"棋盘上放的所有芝麻的重量是{numResult}kg");
         }
