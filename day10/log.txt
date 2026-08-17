@@ -1,0 +1,18 @@
+2026/8/14 20:35:30：用户jason注册成功。
+2026/8/14 20:41:18：用户jason登录成功。
+2026/8/14 20:41:28：用户jason在登录界面输入密码时输入了一个错误的密码。
+2026/8/15 11:35:19：用户zhensin注册成功。
+2026/8/15 11:35:36：用户zhensin登录成功。
+2026/8/15 11:35:44：游客用户在菜单界面输入服务号时输入有误。
+2026/8/15 11:47:00：游客用户在注册界面输入用户名时输入了一个已注册的用户名。
+2026/8/15 11:47:07：用户jason在登录界面读取文件失败，文件路径为：D:\Microsoft Visual Studio\20221\Project\Homework\day10\user.json。具体错误信息：System.IO.DirectoryNotFoundException: Could not find a part of the path 'D:\Microsoft Visual Studio\20221\Project\Homework\day10\user.json'.
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Encoding encoding, Int32 bufferSize)
+   at System.IO.File.ReadAllText(String path, Encoding encoding)
+   at day10.Program.<>c__DisplayClass0_0.<Main>b__1(String filePath, String exMessage) in D:\Microsoft Visual Studio\2022\Project\Homework\day10\Program.cs:line 47
+2026/8/15 11:49:30：用户jason在登录界面读取文件失败。文件路径为：
+D:\Microsoft Visual Studio\20221\Project\Homework\day10\user.json。具体错误信息：
+Could not find a part of the path 'D:\Microsoft Visual Studio\20221\Project\Homework\day10\user.json'.
