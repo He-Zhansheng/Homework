@@ -1,1 +1,18 @@
-[{"name":"\u4E09\u56FD\u6F14\u4E49","author":"\u7F57\u8D2F\u4E2D","mark":"\u5386\u53F2\u3001\u6B66\u4FA0","price":"66.6","isBorrow":true,"id":0.14021653181061522},{"name":"\u7EA2\u697C\u68A6","author":"\u66F9\u96EA\u82B9","mark":"\u7231\u60C5\u3001\u5386\u53F2","price":"99","isBorrow":true,"id":0.8179547498195121}]
+[
+  {
+    "name": "\u4E09\u56FD\u6F14\u4E49",
+    "author": "\u7F57\u8D2F\u4E2D",
+    "mark": "\u5386\u53F2\u3001\u6B66\u4FA0",
+    "price": "66.6",
+    "isBorrow": false,
+    "id": 0.14021653181061522
+  },
+  {
+    "name": "\u7EA2\u697C\u68A6",
+    "author": "\u66F9\u96EA\u82B9",
+    "mark": "\u5386\u53F2",
+    "price": "100",
+    "isBorrow": true,
+    "id": 0.8179547498195121
+  }
+]

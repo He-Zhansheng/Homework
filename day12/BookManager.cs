@@ -4,19 +4,29 @@ namespace day12
 {
     internal class BookManager
     {
-        private string MessagePath;
+        private string MessagePath { get; set; }
         string? booksMessage;
         List<Dictionary<string, dynamic>> books;
+
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            WriteIndented = true,// JSON序列化时候美化
+            AllowTrailingCommas = true, // JSON反序列化时候允许 最后出现逗号
+        };
+
         public BookManager()
         {
             MessagePath = "D:\\Microsoft Visual Studio\\2022\\Project\\Homework\\day12\\book.json";
-            booksMessage = GetMessage();
-            if (booksMessage == null)
-            {
-                Console.WriteLine("程序系统出错");
-                return;
-            }
+            // 判断文件是否存在，如果不存在则创建
+            if (!File.Exists(MessagePath)) File.WriteAllText(MessagePath, "");
+            booksMessage = File.ReadAllText(MessagePath);
+
             books = string.IsNullOrWhiteSpace(booksMessage) ? new() : JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(booksMessage);
+        }
+
+        void UpdateData()
+        {
+            File.WriteAllText(MessagePath, JsonSerializer.Serialize(books, options));
         }
 
         public void AddBook()
@@ -37,12 +47,11 @@ namespace day12
             };
             if (!ModifyMessage(book, $"书籍{book["name"]}", "新增数据")) return;
 
-            book["isBorrow"] = true;
-            Random tmp = new Random();
-            book["id"] = tmp.NextDouble();
+            book["isBorrow"] = false;
+            book["id"] = new Random().NextDouble();
 
             books.Add(book);
-            File.WriteAllText(MessagePath, JsonSerializer.Serialize(books));
+            UpdateData();
 
             Console.WriteLine("新增成功");
             Sundry.Log($"新增书本{book["name"]}成功");
@@ -72,7 +81,7 @@ namespace day12
             book["name"] = bookMessage;
             if (!ModifyMessage(book, "修改后", "修改数据")) return;
 
-            File.WriteAllText(MessagePath, JsonSerializer.Serialize(books));
+            UpdateData();
             Console.WriteLine("修改成功");
             Sundry.Log($"修改书本{book["name"]}成功");
         }
@@ -90,6 +99,7 @@ namespace day12
             if (!Sundry.GetInput("用户在删除数据界面输入书名时", out string? bookMessage)) return;
 
             if (books.RemoveAll(item => item["name"].GetString() == bookMessage) != 0) Sundry.Log($"用户删除书籍{bookMessage}");
+            UpdateData();
             Console.WriteLine("删除完成");
         }
 
@@ -98,7 +108,7 @@ namespace day12
             Console.Write("====查询所有数据====\n");
             Sundry.Log($"用户查询系统收录的所有书籍");
 
-            books.ForEach(item => Console.WriteLine(JsonSerializer.Serialize(item)));
+            books.ForEach(item => { foreach (var item1 in item) Console.WriteLine($"{item1.Key}:{item1.Value}"); });
         }
 
         public void SearchBook()
@@ -113,8 +123,40 @@ namespace day12
                 Sundry.Log($"用户查看未收录书籍{bookMessage}");
                 return;
             }
-            Console.WriteLine(JsonSerializer.Serialize(book));
+            foreach (var item1 in book) Console.WriteLine($"{item1.Key}:{item1.Value}");
+
             Sundry.Log($"用户查询书籍{bookMessage}");
+        }
+
+        public bool GetBook()
+        {
+            Console.WriteLine("====借阅书籍====\n目前系统内可借阅的书籍如下：");
+            Sundry.Log($"用户查询系统可借阅的所有书籍");
+            books.ForEach(item =>
+            {
+                if (!item["isBorrow"].GetBoolean()) Console.WriteLine(item["name"]);
+            }
+            );
+            Console.WriteLine("请输入你要借阅的书籍名（按0取消）：");
+            if (Sundry.GetInput($"用户在借阅书籍界面输入借阅书籍名时", out string? bookName))
+            {
+                if (bookName != "0")
+                {
+                    foreach (var item in books)
+                    {
+                        if (item["name"].GetString() == bookName)
+                        {
+                            Console.WriteLine("借阅成功");
+                            item["isBorrow"] = true;
+                            Sundry.Log($"用户借阅书籍{bookName}");
+                            UpdateData();
+                            return true;
+                        }
+                    }
+                    Console.WriteLine("书籍名有误");
+                }
+            }
+            return false;
         }
 
         bool ModifyMessage(Dictionary<string, dynamic> book, string messageModify, string messageLocation)
@@ -132,19 +174,6 @@ namespace day12
             if (!Sundry.GetInput($"用户在{messageLocation}界面输入{messageModify}价格时", out bookMessage)) return false;
             book["price"] = bookMessage;
             return true;
-        }
-
-        string? GetMessage()
-        {
-            try
-            {
-                return File.ReadAllText(MessagePath);
-            }
-            catch (Exception ex)
-            {
-                Sundry.Log($"图书信息存储的路径为：\n{MessagePath}。\n具体错误信息：\n{ex.Message}");
-                return null;
-            }
         }
     }
 }
